@@ -95,7 +95,7 @@ var GameLoop = function () {
 		}
 
 		player.move();
-		if (player.hit(players) || arena.isOutside(player)) {
+		if (player.hit(players) || arena.isOutside(player.head)) {
 			player.isAlive = false;
 			killedPlayers++;
 			return;
