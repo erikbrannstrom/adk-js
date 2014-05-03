@@ -8,14 +8,32 @@
 <body>
 
 <div class="container">
-	<div class="canvasContainer">
-		<canvas></canvas>
-	</div>
-	<aside class="sidebar">
-		<ul class="players">
-			<li><span class="name"></span>: <span class="score"></span></li>
+	<div id="setup">
+		<h2>PLAYERS</h2>
+		<ul>
+			<li id="player1">
+				<input type="text" placeholder="Player 1" class="name" />
+				<input type="text" placeholder="Left" class="keySelector left" />
+				<input type="text" placeholder="Right" class="keySelector right" />
+			</li>
+			<li id="player2">
+				<input type="text" placeholder="Player 2" class="name" />
+				<input type="text" placeholder="Left" class="keySelector left" />
+				<input type="text" placeholder="Right" class="keySelector right" />
+			</li>
 		</ul>
-	</aside>
+		<button>Play</button>
+	</div>
+	<div id="game" class="hidden">
+		<div class="canvasContainer">
+			<canvas></canvas>
+		</div>
+		<aside>
+			<ul class="players">
+				<li><span class="name"></span>: <span class="score"></span></li>
+			</ul>
+		</aside>
+	</div>
 </div>
 
 </body>

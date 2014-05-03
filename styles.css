@@ -1,9 +1,11 @@
 * { box-sizing: border-box;}
 html { height: 100%; }
 body { font-family: "Courier New"; height: 100%; margin: 0; padding: 10px; }
-.container { display: flex; height: 100%; }
+.container { height: 100%; }
+#game { display: flex; height: 100%; }
 .canvasContainer { flex: 1; height: 100%; }
 canvas { float: left; }
 aside { float: left; padding-left: 10px }
 ul { list-style: none; margin: 0; padding-left: 0; }
 .name { font-weight: bold; display: inline-block; width: 7em }
+.hidden { display: none; }

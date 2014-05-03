@@ -14,14 +14,14 @@ var resetGame;
 var animationId = null;
 
 window.addEventListener('keydown', function (event) {
-	var key = event.key.toLowerCase();
+	var key = (event.key || event.keyIdentifier).toLowerCase();
 	var index = activeButtons.indexOf(key);
 	if (index === -1) {
 		activeButtons.push(key);
 	}
 });
 window.addEventListener('keyup', function (event) {
-	var key = event.key.toLowerCase();
+	var key = (event.key || event.keyIdentifier).toLowerCase();
 	var index = activeButtons.indexOf(key);
 	activeButtons.splice(index, 1);
 });
@@ -140,7 +140,7 @@ resetGame = function (ctx) {
 	ctx.font = "normal 28pt Arial";
 	ctx.fillText("PRESS SPACE", ctx.canvas.width / 2, ctx.canvas.height / 2);
 	var listener = function (event) {
-		if (event.key === ' ') {
+		if (event.keyCode === 32) {
 			window.removeEventListener('keyup', listener);
 			players.forEach(function (player) {
 				player.reset(Point.getRandom(arena.width, arena.height));
@@ -182,7 +182,7 @@ drawArena = function (ctx) {
 	ctx.strokeStyle = style;
 };
 
-window.onload = function () {
+var startGame = function (playerList) {
 	var canvas = document.querySelector('canvas');
 	var canvasContainer = document.querySelector('.canvasContainer');
 	var ctx = canvas.getContext("2d");
@@ -193,10 +193,41 @@ window.onload = function () {
 	setCanvasSize();
 	arena = new Arena(canvas.width, canvas.height);
 
-	players = [
-		new Player('Erik', 'left', 'right', Point.getRandom(arena.width, arena.height), '#f00'),
-		new Player('Emelie', 'a', 'd', Point.getRandom(arena.width, arena.height), '#0ff')
-	];
+	var colors = ['#f00', '#0ff', '#00f', '#666'];
+	players = [];
+	playerList.forEach(function (player, index) {
+		players.push(new Player(player.name, player.left, player.right, Point.getRandom(arena.width, arena.height), colors[index]));
+	})
 	updateScoreboard();
 	window.requestAnimationFrame(GameLoop);
+};
+
+window.onload = function () {
+	var selectors = document.querySelectorAll('.keySelector');
+	for (var i = 0; i < selectors.length; i++) {
+		selectors[i].addEventListener('keydown', function (event) {
+			event.preventDefault();
+			event.target.value = (event.key || event.keyIdentifier) === ' ' ? 'space' : (event.key || event.keyIdentifier);
+			event.target.dataset.key = (event.key || event.keyIdentifier);
+			event.target.blur();
+		});
+	}
+	document.querySelector('#setup button').addEventListener('click', function () {
+		var playerSetup = document.querySelectorAll('#setup li');
+		var playerList = [];
+
+		for (var i = 0; i < playerSetup.length; i++) {
+			var item = playerSetup[i];
+			var name = item.querySelector('input.name').value;
+			if (name === '') {
+				continue;
+			}
+			var left = item.querySelector('input.left').dataset.key.toLowerCase();
+			var right = item.querySelector('input.right').dataset.key.toLowerCase();
+			playerList.push({ name: name, left: left, right: right });
+		}
+		document.querySelector('#setup').classList.add('hidden');
+		document.querySelector('#game').classList.remove('hidden');
+		startGame(playerList);
+	})
 };
