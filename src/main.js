@@ -14,16 +14,16 @@ var resetGame;
 var animationId = null;
 
 window.addEventListener('keydown', function (event) {
-	var key = (event.key || event.keyIdentifier).toLowerCase();
-	var index = activeButtons.indexOf(key);
+	var index = activeButtons.indexOf(event.keyCode);
 	if (index === -1) {
-		activeButtons.push(key);
+		activeButtons.push(event.keyCode);
 	}
 });
 window.addEventListener('keyup', function (event) {
-	var key = (event.key || event.keyIdentifier).toLowerCase();
-	var index = activeButtons.indexOf(key);
-	activeButtons.splice(index, 1);
+	var index = activeButtons.indexOf(event.keyCode);
+	if (index !== -1) {
+		activeButtons.splice(index, 1);
+	}
 });
 
 var updateScoreboard = function () {
@@ -208,7 +208,7 @@ window.onload = function () {
 		selectors[i].addEventListener('keydown', function (event) {
 			event.preventDefault();
 			event.target.value = (event.key || event.keyIdentifier) === ' ' ? 'space' : (event.key || event.keyIdentifier);
-			event.target.dataset.key = (event.key || event.keyIdentifier);
+			event.target.dataset.key = event.keyCode;
 			event.target.blur();
 			if (event.target.classList.contains('left')) {
 				event.target.parentNode.querySelector('.right').focus();
@@ -225,8 +225,8 @@ window.onload = function () {
 			if (name === '') {
 				continue;
 			}
-			var left = item.querySelector('input.left').dataset.key.toLowerCase();
-			var right = item.querySelector('input.right').dataset.key.toLowerCase();
+			var left = parseInt(item.querySelector('input.left').dataset.key, 10);
+			var right = parseInt(item.querySelector('input.right').dataset.key, 10);
 			playerList.push({ name: name, left: left, right: right });
 		}
 		document.querySelector('#setup').classList.add('hidden');
