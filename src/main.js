@@ -4,6 +4,8 @@ var Arena = require('./Arena');
 var Player = require('./Player');
 
 var SHOW_FPS = true;
+var WIN_SCORE = 10;
+var WIN_SCORE_MARGIN = 2;
 var players;
 var arena;
 var drawArena;
@@ -131,14 +133,45 @@ var GameLoop = function () {
 	animationId = window.requestAnimationFrame(GameLoop);
 };
 
+var getWinner = function () {
+	var first, firstScore = 0, second, secondScore = 0;
+	players.forEach(function (player) {
+		if (player.score >= firstScore) {
+			second = first;
+			secondScore = firstScore;
+			first = player;
+			firstScore = player.score;
+		} else if (player.score >= secondScore) {
+			second = player;
+			secondScore = player.score;
+		}
+	});
+
+	if (first.score >= WIN_SCORE && (first.score - second.score) >= WIN_SCORE_MARGIN) {
+		return first;
+	}
+	return null;
+};
+
 resetGame = function (ctx) {
 	window.cancelAnimationFrame(animationId);
-	ctx.fillStyle = "black";
-	ctx.font = "normal 26pt Arial";
+
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
 	ctx.font = "normal 28pt Arial";
-	ctx.fillText("PRESS SPACE", ctx.canvas.width / 2, ctx.canvas.height / 2);
+
+	var winner = getWinner();
+	if (winner !== null) {
+		ctx.fillStyle = winner.color;
+		ctx.fillText(winner.name + ' wins!', ctx.canvas.width / 2, ctx.canvas.height / 2 - 50);
+		ctx.fillText('PRESS SPACE FOR REMATCH', ctx.canvas.width / 2, ctx.canvas.height / 2);
+		players.forEach(function (player) {
+			player.score = 0;
+		});
+	} else {
+		ctx.fillStyle = "black";
+		ctx.fillText("PRESS SPACE", ctx.canvas.width / 2, ctx.canvas.height / 2);
+	}
 	var listener = function (event) {
 		if (event.keyCode === 32) {
 			window.removeEventListener('keyup', listener);
@@ -147,6 +180,7 @@ resetGame = function (ctx) {
 			});
 			ctx.fillStyle = '#fff';
 			ctx.fillRect(0 , 0, arena.width, arena.height);
+			updateScoreboard();
 			window.requestAnimationFrame(GameLoop);
 		}
 	};
