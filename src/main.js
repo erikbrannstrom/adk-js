@@ -210,6 +210,9 @@ window.onload = function () {
 			event.target.value = (event.key || event.keyIdentifier) === ' ' ? 'space' : (event.key || event.keyIdentifier);
 			event.target.dataset.key = (event.key || event.keyIdentifier);
 			event.target.blur();
+			if (event.target.classList.contains('left')) {
+				event.target.parentNode.querySelector('.right').focus();
+			}
 		});
 	}
 	document.querySelector('#setup button').addEventListener('click', function () {
