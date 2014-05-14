@@ -41,6 +41,7 @@ var updateScoreboard = function () {
 		var li = document.createElement('li');
 		var name = document.createElement('span');
 		name.classList.add('name');
+		name.style.color = player.color;
 		name.textContent = player.name;
 		var score = document.createElement('span');
 		score.classList.add('score');
