@@ -154,6 +154,14 @@ var getWinner = function () {
 	return null;
 };
 
+var ARENA_MARGIN = 75;
+var getStartPosition = function () {
+	var start = Point.getRandom(arena.width - ARENA_MARGIN * 2, arena.height - ARENA_MARGIN * 2);
+	start.x = start.x + ARENA_MARGIN;
+	start.y = start.y + ARENA_MARGIN;
+	return start;
+};
+
 resetGame = function (ctx) {
 	window.cancelAnimationFrame(animationId);
 
@@ -177,7 +185,7 @@ resetGame = function (ctx) {
 		if (event.keyCode === 32) {
 			window.removeEventListener('keyup', listener);
 			players.forEach(function (player) {
-				player.reset(Point.getRandom(arena.width, arena.height));
+				player.reset(getStartPosition());
 			});
 			ctx.fillStyle = '#fff';
 			ctx.fillRect(0 , 0, arena.width, arena.height);
@@ -230,8 +238,10 @@ var startGame = function (playerList) {
 
 	var colors = ['#f00', '#0ff', '#00f', '#666'];
 	players = [];
+
 	playerList.forEach(function (player, index) {
-		players.push(new Player(player.name, player.left, player.right, Point.getRandom(arena.width, arena.height), colors[index]));
+		var start = getStartPosition();
+		players.push(new Player(player.name, player.left, player.right, start, colors[index]));
 	})
 	resetGame(ctx);
 };
