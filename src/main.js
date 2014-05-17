@@ -233,8 +233,7 @@ var startGame = function (playerList) {
 	playerList.forEach(function (player, index) {
 		players.push(new Player(player.name, player.left, player.right, Point.getRandom(arena.width, arena.height), colors[index]));
 	})
-	updateScoreboard();
-	window.requestAnimationFrame(GameLoop);
+	resetGame(ctx);
 };
 
 window.onload = function () {
