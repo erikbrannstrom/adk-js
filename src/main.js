@@ -252,11 +252,15 @@ window.onload = function () {
 		selectors[i].addEventListener('keydown', function (event) {
 			event.preventDefault();
 			event.target.value = (event.key || event.keyIdentifier) === ' ' ? 'space' : (event.key || event.keyIdentifier);
-			event.target.dataset.key = event.keyCode;
 			event.target.blur();
+			var hidden;
 			if (event.target.classList.contains('left')) {
+				hidden = event.target.parentNode.querySelector('input[type="hidden"].left');
 				event.target.parentNode.querySelector('.right').focus();
+			} else {
+				hidden = event.target.parentNode.querySelector('input[type="hidden"].right');
 			}
+			hidden.value = event.keyCode;
 		});
 	}
 	document.querySelector('#setup button').addEventListener('click', function () {
@@ -269,8 +273,8 @@ window.onload = function () {
 			if (name === '') {
 				continue;
 			}
-			var left = parseInt(item.querySelector('input.left').dataset.key, 10);
-			var right = parseInt(item.querySelector('input.right').dataset.key, 10);
+			var left = parseInt(item.querySelector('input[type="hidden"].left').value, 10);
+			var right = parseInt(item.querySelector('input[type="hidden"].right').value, 10);
 			playerList.push({ name: name, left: left, right: right });
 		}
 		document.querySelector('#setup').classList.add('hidden');
