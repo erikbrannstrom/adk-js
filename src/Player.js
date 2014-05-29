@@ -1,6 +1,7 @@
 var Point = require('./Point');
+var Rectangle = require('./Rectangle');
 
-var Player = function (name, left, right, startPos, color) {
+var Player = function (name, left, right, color) {
 	this.isAlive = true;
 	this.name = name;
 	this.score = 0;
@@ -10,7 +11,7 @@ var Player = function (name, left, right, startPos, color) {
 	this.speed = 1;
 	this.color = color;
 	this.tail = [];
-	this.head = startPos;
+	this.head = null;
 	this.tickCounter = 0;
 };
 
@@ -32,6 +33,29 @@ Player.prototype = {
 		} else {
 			this.tickCounter++;
 		}
+	},
+	render: function (ctx) {
+		// Clear rect around head
+		var rect = new Rectangle(this.head.x - 5, this.head.y - 5, 10, 10);
+		ctx.clearRect(rect.x , rect.y, rect.width, rect.height);
+
+		// Draw body
+		this.tail.forEach(function (point) {
+			if (!rect.contains(point)) {
+				return;
+			}
+			ctx.beginPath();
+			ctx.arc(point.x, point.y, 1.5, 0, 2 * Math.PI, false);
+			ctx.fillStyle = this.color;
+			ctx.fill();
+		}, this);
+
+		// Draw head
+		ctx.beginPath();
+		ctx.fillStyle = '#000';
+		ctx.arc(this.head.x, this.head.y, 1.5, 0, 2*Math.PI, false);
+		ctx.closePath();
+		ctx.fill();
 	},
 	turnRight: function () {
 		this.direction = this.direction + TURN_SPEED;
