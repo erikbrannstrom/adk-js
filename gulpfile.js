@@ -1,15 +1,18 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
-var source = require('vinyl-source-stream')
+var reactify = require('reactify');
+var source = require('vinyl-source-stream');
 
 gulp.task('default', function() {
-	gulp.watch('./src/*.js', ['browserify']);
+	gulp.watch(['./src/*.js', './src/**/*.jsx'], ['browserify']);
 });
 
 gulp.task('browserify', function() {
-	var bundleStream = browserify('./src/main.js').bundle({ debug: true });
+	var bundler = browserify({ extensions: '.jsx' }).add('./src/main.js');
+	bundler.transform(reactify);
+	var stream = bundler.bundle({ debug: true });
 
-	return bundleStream
+	return stream
 		.pipe(source('./bundle.js'))
 		.pipe(gulp.dest('./build'));
 });

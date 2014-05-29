@@ -1,5 +1,7 @@
 var Player = require('./Player');
 var Game = require('./Game');
+var React = require('react');
+var Players = require('./component/Players');
 
 window.onload = function () {
 	var selectors = document.querySelectorAll('.keySelector');
@@ -18,6 +20,8 @@ window.onload = function () {
 			hidden.value = event.keyCode;
 		});
 	}
+
+	React.renderComponent(Players({}), document.querySelector('#setup'));
 
 	document.querySelector('#setup button').addEventListener('click', function () {
 		var playerSetup = document.querySelectorAll('#setup li');
