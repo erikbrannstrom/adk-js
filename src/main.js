@@ -8,7 +8,6 @@ var WIN_SCORE = 10;
 var WIN_SCORE_MARGIN = 2;
 var players;
 var arena;
-var drawArena;
 var activeButtons = [];
 var lastAnimationFrame = null, framesSinceUpdate = 0, fps = 0;
 var showFPS;
@@ -121,7 +120,7 @@ var GameLoop = function () {
 		});
 	}
 
-	drawArena(ctx);
+	this.arena.paint(ctx);
 	if (SHOW_FPS) {
 		showFPS(ctx);
 	}
@@ -212,18 +211,6 @@ showFPS = function (ctx) {
 	ctx.textAlign = "left";
 	ctx.fillText(fps + " fps", 10, 26);
 }
-
-drawArena = function (ctx) {
-	var style = ctx.strokeStyle;
-	ctx.strokeStyle = '#000';
-	ctx.moveTo(0, 0);
-	ctx.lineTo(arena.width, 0);
-	ctx.lineTo(arena.width, arena.height);
-	ctx.lineTo(0, arena.height);
-	ctx.lineTo(0, 0);
-	ctx.stroke();
-	ctx.strokeStyle = style;
-};
 
 var startGame = function (playerList) {
 	var canvas = document.querySelector('canvas');
