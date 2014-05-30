@@ -10,3 +10,4 @@ aside { float: left; padding-left: 10px }
 ul { list-style: none; margin: 0; padding-left: 0; }
 .name { font-weight: bold; display: inline-block; width: 7em }
 .hidden { display: none; }
+#game.hidden { display: none; }
