@@ -14,7 +14,7 @@ Arena.prototype.isOutside = function (point) {
 		|| point.y > this.height;
 };
 
-Arena.prototype.paint = function (ctx) {
+Arena.prototype.render = function (ctx) {
 	var style = ctx.strokeStyle;
 	ctx.strokeStyle = '#000';
 	ctx.moveTo(0, 0);

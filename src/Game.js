@@ -95,7 +95,7 @@ Game.prototype.run = function () {
 	}
 
 	if (SHOW_FPS === true) {
-		drawFPS(this.baseCanvas.getContext('2d'));
+		renderFPS(this.baseCanvas.getContext('2d'));
 	}
 
 	this.animationId = window.requestAnimationFrame(this.run.bind(this));
@@ -129,7 +129,7 @@ Game.prototype.reset = function () {
 				player.reset(_this.arena.getRandomStartPosition());
 				var canvas = _this.playerCanvases[index];
 				canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-				_this.arena.paint(_this.baseCanvas.getContext('2d'));
+				_this.arena.render(_this.baseCanvas.getContext('2d'));
 			});
 			_this.scoreboard.update();
 			window.requestAnimationFrame(_this.run.bind(_this));
@@ -139,7 +139,7 @@ Game.prototype.reset = function () {
 };
 
 var lastAnimationFrame = null, framesSinceUpdate = 0, fps = 0;
-function drawFPS (ctx) {
+function renderFPS (ctx) {
 	var UPDATE_FRAME_RATIO = 20;
 	var now = Date.now();
 	framesSinceUpdate++;
