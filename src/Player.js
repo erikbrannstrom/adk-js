@@ -1,7 +1,7 @@
 var Point = require('./Point');
 var Rectangle = require('./Rectangle');
 
-var Player = function (name, left, right, color) {
+var Player = function (name, left, right) {
 	this.isAlive = true;
 	this.name = name;
 	this.score = 0;
@@ -9,13 +9,13 @@ var Player = function (name, left, right, color) {
 	this.rightButton = right;
 	this.direction = Math.random()*360;
 	this.speed = 1;
-	this.color = color;
+	this.color = '#000';
 	this.tail = [];
 	this.head = null;
 	this.tickCounter = 0;
 };
 
-var BASE_SPEED = 0.8;
+var BASE_SPEED = 1.0;
 var TURN_SPEED = 0.05;
 var THRESHOLD = 3;
 var TICKS_UNTIL_GAP = 400;
@@ -58,10 +58,10 @@ Player.prototype = {
 		ctx.fill();
 	},
 	turnRight: function () {
-		this.direction = this.direction + TURN_SPEED;
+		this.direction = this.direction + TURN_SPEED * this.speed;
 	},
 	turnLeft: function () {
-		this.direction = this.direction - TURN_SPEED;
+		this.direction = this.direction - TURN_SPEED * this.speed;
 	},
 	hit: function (players) {
 		return players.some(function (other) {
@@ -80,7 +80,6 @@ Player.prototype = {
 	reset: function (startPos) {
 		this.isAlive = true;
 		this.direction = Math.random()*360;
-		this.speed = 1;
 		this.tail = [];
 		this.head = startPos;
 		this.tickCounter = 0;
